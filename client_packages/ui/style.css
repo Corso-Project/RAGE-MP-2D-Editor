@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
+
+body {
+    margin: 0;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    overflow: hidden;
+}
+
+body .block {
+    /* width: 20%;
+    height: 50%; */
+    width: 35.64814814814815vh;
+    height: 50vh;
+
+    background-color: rgba(0, 0, 0, 0.50);
+
+    animation-name: showBlock;
+    animation-duration: 2s;
+    overflow: overlay;
+}
+body .block .title {
+    padding-top: 1.5em;
+    color: #fdd116;
+    padding-bottom: 1.5em;
+}
+body .block .options {
+    color: #fdd116;
+    padding-top: 3em;
+    padding-bottom: 1.5em;
+}
+body .block .title:hover,
+body .block .options:hover {
+    color: #E6BE14;
+}
+
+body .block .menu {
+    padding: 0 0.5em 0 0.5em;
+}
+body .block .menu .text {
+    padding-top: 1em;
+    font-size: 0.8em;
+    /* color: rgba(red, green, blue, alpha); */
+}
+body .block .menu .text:hover {
+    color: rgba(255, 0, 0, 0.55);
+}
+body .block .menu .font {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body .block .menu .font .slider:hover,
+body .block .menu .option.text .slider:hover {
+    color: orange !important;
+}
+
+body .block .RAGE-MP {
+    /* position: absolute;
+    width: 2em;
+    left: 21em;
+    top: 27em; */
+    position: absolute;
+    width: 2em;
+    left: 0.5em;
+    top: 0.5em;
+}
+/* */
+.text {
+    text-align: center;
+    text-shadow: 0 0.15em 0 rgba(0, 0, 0, 0.5);
+}
+
+/* @keyframes */
+@keyframes showBlock {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 0.15em;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    /* background: #f1f1f1; */
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #fdd116;
+}
+  
+/* Handle on hover 
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+} */

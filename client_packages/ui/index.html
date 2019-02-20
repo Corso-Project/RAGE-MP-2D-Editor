@@ -1,0 +1,131 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pickr-widget/dist/pickr.min.css" />
+    <style>
+        .pcr-app {
+            width: 35.7em !important;
+
+            top: 7em !important;
+            left: 28em !important;
+        }
+        .pickr {
+            display: inline-flex !important;
+            position: inherit !important;
+            margin-left: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="textEditor" @mousemove="onMouseMove($event)" style="width: 100%; height: 100%;" @keydown="key($event)">
+        <div id="block" class="block">
+            <div @click="off($event)" class="title text">2D Editor</div>
+            <div @click="off($event)" class="menu">
+                <div @mouseover="hoverSound" @click="toClient('newText');" class="option text">Create new 2D text</div>
+                <div @mouseover="hoverSound" @click="toClient('editText');" class="option text" style="display: flex;align-items: center;justify-content: center;">Edit
+                    text <div class="slider"> [{{ textSettings.editText }}]</div>
+                </div>
+                <div @mouseover="hoverSound" class="option text font">Change font
+                    <div @click="slider(false)" class="slider">
+                        <</div> <div class="number">{{ textSettings.showFont }}
+                    </div>
+                    <div @click="slider(true)" class="slider">></div>
+                </div>
+                <div @click="toClient('color');" id="custom" class="option text"><div @mouseover="hoverSound" style="display: contents;" class="color">Color</div><div id="color" class="color-picker"></div></div>
+                <!--div @mouseover="hoverSound" @click="toClient('scale');" class="option text">Scale 
+                    <div style="display: inline-flex;" class="slider"> 
+                        <div style="display: inline-flex;">
+                            <div><</div><div>1</div><div>></div>
+                        </div>
+                        <div><</div><div>1</div><div>></div>
+                    </div>
+                </div-->
+                <div @mouseover="hoverSound" @click="toClient('deleteText');" class="option text">Delete Text</div>
+                <div @mouseover="hoverSound" @click="toClient('cursorToggle');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle
+                    cursor Text<div class="slider"> [{{ textSettings.cursorText }}]</div>
+                </div>
+            </div>
+            <div @click="off($event)" class="title text">More</div>
+            <div @click="off($event)" class="menu" @mouseover="hoverSound">
+                <div @click="toClient('newRect');" class="option text">Create Rectangle</div>
+                <div @click="toClient('cursorToggleRect');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle
+                    cursor Rect <div class="slider"> [{{ textSettings.cursorRect }}]</div>
+                </div>
+                <div @click="toClient('deleteRect');" class="option text">Delete Rectangle</div>
+            </div>
+            <div class="options text">Options</div>
+            <div class="menu" @mouseover="hoverSound">
+                <div @click="click" class="option text" style="line-height: 1.5em;">Change position of this CEF.</div>
+                <div @mouseover="hoverSound" @click="toClient('exportSelect');" class="option text">Export selected item</div>
+                <div @mouseover="hoverSound" @click="toClient('exportAll');" class="option text">Export all items</div>
+                <div class="option text" style="line-height: 1.5em;">Elements List:</div>
+                <div v-for="item in elements" :key="item.id">
+                    <div class="option text" @click="selectElement(item.id, item.string);">{{ item.string }} | ID: {{ item.id }}</div>
+                </div>
+                <br><br><br>
+            </div>
+            <img @mouseover="hoverSoundEgg" @mouseleave="hoverSoundEgg" class="RAGE-MP" src="./04.png" alt="RAGE MP -> https://rage.mp/" />
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pickr-widget/dist/pickr.es5.min.js"></script>
+    <script>
+        const pickr = Pickr.create({
+            el: '.color-picker',
+            // useAsButton: false,
+            parent: '.color',
+
+            components: {
+
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
+
+                // Input / output Options
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    hsla: true,
+                    hsva: true,
+                    cmyk: true,
+                    input: true,
+                    clear: true,
+                    save: true
+                }
+            },
+            default: 'FFFFFF',
+            defaultRepresentation: 'RGBA',
+            onSave(hsva, instance) {
+                // same as onChange
+                console.log(hsva.toRGBA().toString());
+                // console.log(instance);
+
+                var regex = /[+-]?\d+(?:\.\d+)?/g;
+
+                var str = hsva.toRGBA().toString();
+
+                let string = '';
+                let match = [];
+                let array = [];
+                let number = 0;
+                while (match = regex.exec(str)) {
+                    array.push({ match });
+                    console.log(match);
+                }
+                console.log(array[array.length-1].match[0]);
+                console.log(array[array.length-1].match[0] * 255);
+                console.log(array[0].match[0], array[1].match[0], array[2].match[0], array[3].match[0] * 255);
+                mp.trigger('setColor', array[0].match[0], array[1].match[0], array[2].match[0], array[3].match[0] * 255);
+            },
+        });
+        // pickr.show();
+        // body.elements.push({ string: 'text', id: 0 });
+        // body.editElement(0, 'happy new year');
+    </script>
+</body>
+
+</html>
