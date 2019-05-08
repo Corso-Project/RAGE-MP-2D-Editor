@@ -48,17 +48,18 @@
                     cursor Text<div class="slider"> [{{ textSettings.cursorText }}]</div>
                 </div>
             </div>
-            <div @click="off($event)" class="title text">More</div>
+            <!--div @click="off($event)" class="title text">More</div>
             <div @click="off($event)" class="menu" @mouseover="hoverSound">
                 <div @click="toClient('newRect');" class="option text">Create Rectangle</div>
                 <div @click="toClient('cursorToggleRect');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle
                     cursor Rect <div class="slider"> [{{ textSettings.cursorRect }}]</div>
                 </div>
                 <div @click="toClient('deleteRect');" class="option text">Delete Rectangle</div>
-            </div>
+            </div-->
             <div class="options text">Options</div>
             <div class="menu" @mouseover="hoverSound">
                 <div @click="click" class="option text" style="line-height: 1.5em;">Change position of this CEF.</div>
+                <div @click="hoverPlay" class="option text" style="line-height: 1.5em;">Disable sound on hover <div class="slider"> [{{ soundsStatus.hoverPlay }}]</div></div>
                 <div @mouseover="hoverSound" @click="toClient('exportSelect');" class="option text">Export selected item</div>
                 <div @mouseover="hoverSound" @click="toClient('exportAll');" class="option text">Export all items</div>
                 <div class="option text" style="line-height: 1.5em;">Elements List:</div>

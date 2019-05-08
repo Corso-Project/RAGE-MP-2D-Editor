@@ -19,6 +19,7 @@ const body = new Vue({
         },
         soundsStatus: {
             gtasa: false,
+            hoverPlay: true,
         },
         soundsLink: {
             hover: 'https://cdn.corso-project.ru/select.ogg',
@@ -54,6 +55,9 @@ const body = new Vue({
         click() {
             this.mouse.flow = !this.mouse.flow;
         },
+        hoverPlay() {
+            this.soundsStatus.hoverPlay = !this.soundsStatus.hoverPlay;
+        },
         off() {
             this.mouse.flow = false;
         },
@@ -70,6 +74,7 @@ const body = new Vue({
             }
         },
         hoverSound() {
+            if (this.soundsStatus.hoverPlay === false) return;
             new Audio(this.soundsLink.hover).play();
         },
         hoverSoundEgg() {
