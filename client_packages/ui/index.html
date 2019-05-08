@@ -2,7 +2,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pickr-widget/dist/pickr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css"/>
     <style>
         .pcr-app {
             width: 35.7em !important;
@@ -14,6 +14,7 @@
             display: inline-flex !important;
             position: inherit !important;
             margin-left: 1em;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -71,60 +72,49 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pickr-widget/dist/pickr.es5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
     <script>
-        const pickr = Pickr.create({
+        const pickr = new Pickr({
             el: '.color-picker',
-            // useAsButton: false,
-            parent: '.color',
+            useAsButton: false,
+            inline: false,
+            disabled: false,
+            comparison: true,
+
+            default: 'fff',
+            defaultRepresentation: 'RGBA',
+            showAlways: false,
+            closeWithKey: 'Escape',
+            position: 'middle',
+            adjustableNumbers: true,
 
             components: {
+                palette: true,
 
-                // Main components
                 preview: true,
                 opacity: true,
                 hue: true,
 
-                // Input / output Options
                 interaction: {
                     hex: true,
                     rgba: true,
                     hsla: true,
                     hsva: true,
                     cmyk: true,
+
                     input: true,
                     clear: true,
                     save: true
-                }
-            },
-            default: 'FFFFFF',
-            defaultRepresentation: 'RGBA',
-            onSave(hsva, instance) {
-                // same as onChange
-                console.log(hsva.toRGBA().toString());
-                // console.log(instance);
-
-                var regex = /[+-]?\d+(?:\.\d+)?/g;
-
-                var str = hsva.toRGBA().toString();
-
-                let string = '';
-                let match = [];
-                let array = [];
-                let number = 0;
-                while (match = regex.exec(str)) {
-                    array.push({ match });
-                    console.log(match);
-                }
-                console.log(array[array.length-1].match[0]);
-                console.log(array[array.length-1].match[0] * 255);
-                console.log(array[0].match[0], array[1].match[0], array[2].match[0], array[3].match[0] * 255);
-                mp.trigger('setColor', array[0].match[0], array[1].match[0], array[2].match[0], array[3].match[0] * 255);
+                },
             },
         });
-        // pickr.show();
-        // body.elements.push({ string: 'text', id: 0 });
-        // body.editElement(0, 'happy new year');
+        pickr.on('save', function(hsva, instance) {
+            let string = hsva.toRGBA().toString();
+            console.log('save', string);
+            var numb = string.match(/(\d+)/g);
+            console.log(`color: output: ${numb[0]}, ${numb[1]}, ${numb[2]}, ${numb[3]}.${numb[4]}`);
+            body.changeColor(numb[0], numb[1], numb[2], `${numb[3]}.${numb[4]}`);
+        });
     </script>
 </body>
 

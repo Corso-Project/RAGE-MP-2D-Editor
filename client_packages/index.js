@@ -36,7 +36,7 @@ mp.keys.bind(0x71, true, () => {
 
 /* Functions */
 // let handle;
-function addDrawText(text = 'Incognito', x = 0.5, y = 0.5, font = 0, color = [255, 255, 255, 255], scaleX = 1, scaleY = 1, outline = false) {
+function addDrawText(text = 'RAGE', x = 0.5, y = 0.5, font = 0, color = [255, 255, 255, 255], scaleX = 1, scaleY = 1, outline = false) {
     // mp.gui.chat.push(`size: ${TextEditor.drawTexts.size} | ${handle} | ${TextEditor.ID + 1} | ${TextEditor.ID}`);
     TextEditor.ID += 1;
     // handle = TextEditor.ID;
@@ -180,11 +180,11 @@ mp.events.add('setColor', (R, G, B, A) => {
     mp.gui.chat.push(`${R}, ${G}, ${B}, ${A}`);
     // mp.gui.chat.push(`Color: ${getDrawText(TextEditor.selected).color}`);
     if (getDrawText(TextEditor.selected)) {
-        /* mp.gui.chat.push('text');
+        mp.gui.chat.push('text');
         mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected))} -> get`);
-        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`); */
-        getDrawText(TextEditor.selected).color = [R, G, B, A];
-        // mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`);
+        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`);
+        getDrawText(TextEditor.selected).color = [R, G, B, A * 255];
+        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`);
     }
     // mp.gui.chat.push(`Color: ${getDrawRect(TextEditor.selected).colorR} / ${getDrawRect(TextEditor.selected).colorG} / ${getDrawRect(TextEditor.selected).colorB} / ${getDrawRect(TextEditor.selected).colorA}`);
 });
@@ -215,9 +215,9 @@ mp.keys.bind(0x28, true, () => { // down arrow
 
     getDrawText(TextEditor.selected).y = getDrawText(TextEditor.selected).y + TextEditor.moveValue;
 });
-mp.keys.bind(0x12, true, () => {
+/* mp.keys.bind(0x12, true, () => {
     mp.gui.cursor.show(true, true);
-});
+}); */
 
 mp.events.add('click', (absoluteX, absoluteY, upOrDown, leftOrRight) => {
     if (TextEditor.cursor && upOrDown === 'down' && leftOrRight === 'left') {

@@ -21,8 +21,8 @@ const body = new Vue({
             gtasa: false,
         },
         soundsLink: {
-            hover: 'https://instaud.io/_/3jrd.ogg',
-            mainTheme: new Audio('https://instaud.io/_/3jrn.mp3'),
+            hover: 'https://cdn.corso-project.ru/select.ogg',
+            mainTheme: new Audio('https://cdn.corso-project.ru/gtasa.ogg'),
         },
         elements: [
             // { type: 'text', id: 0 },
@@ -31,10 +31,6 @@ const body = new Vue({
     mounted() {
         document.addEventListener('keydown', (event) => {
             // console.log(event);
-            /* if (/[a-zA-Z0-9-_ ]/.test(event.key)) {
-                if (event.key === 'Shift' || event.key === 'Tab' || event.key === 'Control' || event.key === 'Alt' || event.key === 'Escape') return;
-                console.log(`ss ${event.key}`);
-            } */
             if (this.textSettings.editText) {
                 if (event.which === 8) {
                     mp.trigger('editText', 0, true);
@@ -175,6 +171,10 @@ const body = new Vue({
                     item.string = text;
                 }
             });
+        },
+        changeColor(r, g, b, a) {
+            console.log(`color: rgba(${Number(r)}, ${Number(g)}, ${Number(b)}, ${parseFloat(a)})`);
+            mp.trigger('setColor', r, g, b, a);
         },
     },
 });
