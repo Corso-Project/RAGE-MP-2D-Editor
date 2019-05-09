@@ -10,7 +10,7 @@ const TextEditor = {
     statusShow: false,
 
     cursor: false,
-    cursorRect: false,
+    // cursorRect: false,
 
     moveValue: 0.01,
     selected: 0,
@@ -59,32 +59,16 @@ mp.keys.bind(0x71, true, () => {
 // const drawTexts = new Map();
 
 /* Functions */
-// let handle;
 function addDrawText(text = 'RAGE', x = 0.5, y = 0.5, font = 0, color = [255, 255, 255, 255], scaleX = 1, scaleY = 1, outline = false) {
-    // mp.gui.chat.push(`size: ${TextEditor.drawTexts.size} | ${handle} | ${TextEditor.ID + 1} | ${TextEditor.ID}`);
     TextEditor.ID += 1;
-    // handle = TextEditor.ID;
     TextEditor.selected = TextEditor.ID;
     TextEditor.drawTexts.set(TextEditor.ID, {
         text, x, y, font, color, scaleX, scaleY, outline,
     });
-    // mp.gui.chat.push(`size: ${TextEditor.drawTexts.size} | ${handle} | ${TextEditor.ID + 1} | ${TextEditor.ID}`);
     mp.game.graphics.notify(`You create element with ~g~${TextEditor.ID}~w~ ID.`);
     TextEditor.created = true;
     TextEditor.browser.execute(`body.elements.push({ string: '${text}', id: ${TextEditor.ID} });`);
     TextEditor.browser.execute(`body.setSelected(${TextEditor.ID})`);
-    return TextEditor.ID;
-}
-function addDrawRect(x = 0.5, y = 0.5, width = 0.1, height = 0.1, colorR = 0, colorG = 0, colorB = 0, colorA = 120) {
-    TextEditor.ID += 1;
-    // handle = TextEditor.ID;
-    TextEditor.selected = TextEditor.ID;
-    TextEditor.drawRects.set(TextEditor.ID, {
-        x, y, width, height, colorR, colorG, colorB, colorA,
-    });
-    mp.game.graphics.notify(`You create element with ~g~${TextEditor.ID}~w~ ID.`);
-    TextEditor.created = false;
-    TextEditor.browser.execute(`body.elements.push({ string: 'Rect', id: ${TextEditor.ID} });`);
     return TextEditor.ID;
 }
 function removeDrawText(handle) {
@@ -100,14 +84,6 @@ function getDrawText(handle) {
 function setDrawText(handle, value) {
     return TextEditor.drawTexts.set(handle, value);
 }
-
-function removeDrawRect(handle) {
-    TextEditor.drawRects.delete(handle);
-}
-function getDrawRect(handle) {
-    return TextEditor.drawRects.get(handle);
-}
-
 /* RAGE:MP Events */
 const RenderEvent = new mp.Event('render', () => {
     // mp.gui.chat.push(`size: ${TextEditor.drawTexts.size}`);
@@ -125,25 +101,12 @@ const RenderEvent = new mp.Event('render', () => {
             outline: info.outline,
         });
     }
-    for (const info of TextEditor.drawRects.values()) {
-        if (TextEditor.cursorRect && !TextEditor.created && getDrawRect(TextEditor.selected) !== undefined) {
-            mp.gui.chat.push(getDrawRect(TextEditor.selected));
-            const resolution = mp.game.graphics.getScreenActiveResolution(0, 0);
-            const cursorPos = mp.gui.cursor.position;
-            getDrawRect(TextEditor.selected).x = cursorPos[0] / resolution.x;
-            getDrawRect(TextEditor.selected).y = cursorPos[1] / resolution.y;
-        }
-        mp.game.graphics.drawRect(info.x, info.y, info.height, info.width, info.colorR, info.colorG, info.colorB, info.colorA);
-    }
 });
 
 /* Another Events */
 mp.events.add('createNewText', () => {
-    // if (!RenderEvent) { RenderEvent.enable(); mp.gui.chat.push('enable'); }
     addDrawText();
-    mp.gui.chat.push('createNewText');
 });
-// getDrawText(select).font = font_id;
 mp.events.add('editText', (value, backspace = false) => {
     if (!TextEditor.drawTexts.get(TextEditor.selected)) {
         mp.events.call('error', 'createText');
@@ -178,47 +141,22 @@ mp.events.add('help', (code) => {
         if (!TextEditor.drawTexts.get(TextEditor.selected)) {
             mp.events.call('error', 'createText');
             TextEditor.browser.execute('body.textSettings.editText = false;');
-        } else mp.game.graphics.notify('Use your keyboard to edit text, then press again on ~r~Edit text~w~ to disable it.');
+        } else {
+            mp.gui.chat.show(false);
+            mp.game.graphics.notify('Use your keyboard to edit text, then press again on ~r~Edit text~w~ to disable it.');
+        }
     }
 });
 
-/* Rectangle */
-mp.events.add('createNewRect', () => {
-    // if (!RenderEvent) { RenderEvent.enable(); }
-    addDrawRect();
-    mp.gui.chat.push('createNewRect');
-    TextEditor.created = false;
-});
-mp.events.add('cursorToggleRect', (status) => {
-    if (TextEditor.created) TextEditor.created = false;
-    TextEditor.cursorRect = status;
-});
-mp.events.add('deleteRect', () => {
-    removeDrawRect(TextEditor.selected);
-});
-
-/* Antoher */
-/* mp.events.add('chatSettings', (status) => {
-    mp.gui.chat.activate(status);
-}); */
 mp.events.add('setColor', (R, G, B, A) => {
     mp.gui.chat.push(`${R}, ${G}, ${B}, ${A}`);
-    // mp.gui.chat.push(`Color: ${getDrawText(TextEditor.selected).color}`);
     if (getDrawText(TextEditor.selected)) {
-        mp.gui.chat.push('text');
-        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected))} -> get`);
-        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`);
         getDrawText(TextEditor.selected).color = [R, G, B, A * 255];
-        mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected).color)} -> get`);
     }
-    // mp.gui.chat.push(`Color: ${getDrawRect(TextEditor.selected).colorR} / ${getDrawRect(TextEditor.selected).colorG} / ${getDrawRect(TextEditor.selected).colorB} / ${getDrawRect(TextEditor.selected).colorA}`);
 });
 mp.events.add('selectElement', (id, string) => {
     mp.game.graphics.notify(`You selected element with ~r~${id}~w~ ID.`);
-    /* if (string !== 'Rect') TextEditor.created = true;
-    else TextEditor.created = false; */
     TextEditor.selected = id;
-    mp.gui.chat.push(`client.index.js -> id: ${id}`)
 });
 /* Keys */
 mp.keys.bind(0x25, true, () => { // left arrow
@@ -241,18 +179,21 @@ mp.keys.bind(0x28, true, () => { // down arrow
 
     getDrawText(TextEditor.selected).y = getDrawText(TextEditor.selected).y + TextEditor.moveValue;
 });
-/* mp.keys.bind(0x12, true, () => {
+mp.keys.bind(0x12, true, () => {
+    if (!TextEditor.statusShow) return;
     mp.gui.cursor.show(true, true);
-}); */
+});
 
 mp.events.add('click', (absoluteX, absoluteY, upOrDown, leftOrRight) => {
     if (TextEditor.cursor && upOrDown === 'down' && leftOrRight === 'left') {
         TextEditor.cursor = !TextEditor.cursor;
         TextEditor.browser.execute(`body.textSettings.cursorText = ${TextEditor.cursor}`);
-    } else if (TextEditor.cursorRect && upOrDown === 'down' && leftOrRight === 'left') {
-        TextEditor.cursorRect = !TextEditor.cursorRect;
-        TextEditor.browser.execute(`body.textSettings.cursorRect = ${TextEditor.cursorRect}`);
     }
+});
+mp.events.add('changeScale', (value1, value2) => {
+    getDrawText(TextEditor.selected).scaleX = value1.toPrecision(2);
+    getDrawText(TextEditor.selected).scaleY = value2.toPrecision(2);
+    mp.gui.chat.push(`scale: ${JSON.stringify(getDrawText(TextEditor.selected))}`);
 });
 // Old
 mp.events.add('scale_', (scale_value) => {

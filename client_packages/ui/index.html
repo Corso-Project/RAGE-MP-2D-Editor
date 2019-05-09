@@ -32,33 +32,21 @@
                     text <div class="slider"> [{{ textSettings.editText }}]</div>
                 </div>
                 <div @mouseover="hoverSound" class="option text font">Change font
-                    <div @click="slider(false)" class="slider">
-                        <</div> <div class="number">{{ textSettings.showFont }}
-                    </div>
-                    <div @click="slider(true)" class="slider">></div>
+                    <div @click="slider(false)" class="slider"> <</div> <div class="number">{{ textSettings.showFont }} </div> <div @click="slider(true)" class="slider">></div>
                 </div>
                 <div @click="toClient('color');" id="custom" class="option text"><div @mouseover="hoverSound" style="display: contents;" class="color">Color</div><div id="color" class="color-picker"></div></div>
-                <!--div @mouseover="hoverSound" @click="toClient('scale');" class="option text">Scale 
-                    <div style="display: inline-flex;" class="slider"> 
+                <div @mouseover="hoverSound" class="option text">Scale 
+                    <div style="display: inline-flex;"> 
                         <div style="display: inline-flex;">
-                            <div><</div><div>1</div><div>></div>
+                            <div class="slider" @click="scaleText('left', 0);"><</div><div>{{ scale1.toPrecision(2) }}</div><div class="slider" @click="scaleText('right', 0);">></div>
                         </div>
-                        <div><</div><div>1</div><div>></div>
+                        <div class="slider" @click="scaleText('left', 1);"><</div><div>{{ scale2.toPrecision(2) }}</div><div class="slider" @click="scaleText('right', 1);">></div>
                     </div>
-                </div-->
+                </div>
                 <div @mouseover="hoverSound" @click="toClient('deleteText');" class="option text">Delete Text</div>
-                <div @mouseover="hoverSound" @click="toClient('cursorToggle');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle
-                    cursor Text<div class="slider"> [{{ textSettings.cursorText }}]</div>
+                <div @mouseover="hoverSound" @click="toClient('cursorToggle');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle cursor Text<div class="slider"> [{{ textSettings.cursorText }}]</div>
                 </div>
             </div>
-            <!--div @click="off($event)" class="title text">More</div>
-            <div @click="off($event)" class="menu" @mouseover="hoverSound">
-                <div @click="toClient('newRect');" class="option text">Create Rectangle</div>
-                <div @click="toClient('cursorToggleRect');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle
-                    cursor Rect <div class="slider"> [{{ textSettings.cursorRect }}]</div>
-                </div>
-                <div @click="toClient('deleteRect');" class="option text">Delete Rectangle</div>
-            </div-->
             <div class="options text">Options</div>
             <div class="menu" @mouseover="hoverSound">
                 <div @click="click" class="option text" style="line-height: 1.5em;">Change position of this CEF.</div>
@@ -114,9 +102,7 @@
         });
         pickr.on('save', function(hsva, instance) {
             let string = hsva.toRGBA().toString();
-            console.log('save', string);
             var numb = string.match(/(\d+)/g);
-            console.log(`color: output: ${numb[0]}, ${numb[1]}, ${numb[2]}, ${numb[3]}.${numb[4]}`);
             body.changeColor(numb[0], numb[1], numb[2], `${numb[3]}.${numb[4]}`);
         });
     </script>
