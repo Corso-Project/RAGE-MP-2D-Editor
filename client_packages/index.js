@@ -193,7 +193,10 @@ mp.events.add('click', (absoluteX, absoluteY, upOrDown, leftOrRight) => {
 mp.events.add('changeScale', (value1, value2) => {
     getDrawText(TextEditor.selected).scaleX = value1.toPrecision(2);
     getDrawText(TextEditor.selected).scaleY = value2.toPrecision(2);
-    mp.gui.chat.push(`scale: ${JSON.stringify(getDrawText(TextEditor.selected))}`);
+});
+mp.events.add('changeOutline', (value) => {
+    getDrawText(TextEditor.selected).outline = value;
+    mp.gui.chat.push(`${JSON.stringify(getDrawText(TextEditor.selected))}`);
 });
 // Old
 mp.events.add('scale_', (scale_value) => {

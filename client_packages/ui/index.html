@@ -35,14 +35,15 @@
                     <div @click="slider(false)" class="slider"> <</div> <div class="number">{{ textSettings.showFont }} </div> <div @click="slider(true)" class="slider">></div>
                 </div>
                 <div @click="toClient('color');" id="custom" class="option text"><div @mouseover="hoverSound" style="display: contents;" class="color">Color</div><div id="color" class="color-picker"></div></div>
-                <div @mouseover="hoverSound" class="option text">Scale 
-                    <div style="display: inline-flex;"> 
+                <div @mouseover="hoverSound" class="option text">Scale
+                    <div style="display: inline-flex;">
                         <div style="display: inline-flex;">
                             <div class="slider" @click="scaleText('left', 0);"><</div><div>{{ scale1.toPrecision(2) }}</div><div class="slider" @click="scaleText('right', 0);">></div>
                         </div>
                         <div class="slider" @click="scaleText('left', 1);"><</div><div>{{ scale2.toPrecision(2) }}</div><div class="slider" @click="scaleText('right', 1);">></div>
                     </div>
                 </div>
+                <div @mouseover="hoverSound" @click="toClient('outline');" class="option text" style="display: flex;align-items: center;justify-content: center;">Outline <div class="slider"> [{{ outline }}]</div></div>
                 <div @mouseover="hoverSound" @click="toClient('deleteText');" class="option text">Delete Text</div>
                 <div @mouseover="hoverSound" @click="toClient('cursorToggle');" class="option text" style="display: flex;align-items: center;justify-content: center;">Toggle cursor Text<div class="slider"> [{{ textSettings.cursorText }}]</div>
                 </div>

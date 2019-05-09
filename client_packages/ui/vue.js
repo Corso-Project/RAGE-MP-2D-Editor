@@ -14,6 +14,7 @@ const body = new Vue({
         scale1: 1,
         scale2: 1,
         selectedElement: -1,
+        outline: false,
         mouse: {
             X: 0,
             Y: 0,
@@ -117,6 +118,9 @@ const body = new Vue({
                 // console.log('color');
             } else if (option === 'scale') {
                 // console.log('scale');
+            } else if (option === 'outline') {
+                this.outline = !this.outline;
+                mp.trigger('changeOutline', this.outline);
             } else if (option === 'deleteText') {
                 mp.trigger('deleteText');
 
