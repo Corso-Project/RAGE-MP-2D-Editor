@@ -7,6 +7,7 @@ mp.events.add('chatEnabled', (isOpen) => {
 /* Variables */
 const TextEditor = {
     browser: null,
+    statusShow: false,
 
     cursor: false,
     cursorRect: false,
@@ -20,12 +21,35 @@ const TextEditor = {
 };
 
 mp.keys.bind(0x71, true, () => {
-    if (TextEditor.browser && mp.browsers.exists(TextEditor.browser)) {
+    /* if (TextEditor.browser && mp.browsers.exists(TextEditor.browser)) {
         mp.gui.cursor.show(false, false);
-        TextEditor.browser.destroy();
+        // TextEditor.browser.destroy();
+        TextEditor.browser.execute("document.getElementById('textEditor').style.display = 'none'");
     } else {
-        TextEditor.browser = mp.browsers.new('package://ui/index.html');
+        if (!TextEditor.browser && !mp.browsers.exists(TextEditor.browser)) {
+            TextEditor.browser = mp.browsers.new('package://ui/index.html');
+        } else TextEditor.browser.execute("document.getElementById('textEditor').style.display = 'block'");
         // TextEditor.browser = mp.browsers.new('https://www.cssscript.com/demo/color-picker-component-pickr/');
+        setTimeout(() => {
+            mp.gui.cursor.show(true, true);
+        }, 1 * 1000);
+    } */
+    if (!TextEditor.browser && !mp.browsers.exists(TextEditor.browser) && !TextEditor.statusShow) {
+        TextEditor.browser = mp.browsers.new('package://ui/index.html');
+        TextEditor.statusShow = true;
+        setTimeout(() => {
+            mp.gui.cursor.show(true, true);
+        }, 1 * 1000);
+        mp.gui.chat.push('3');
+    } else if (TextEditor.statusShow) {
+        TextEditor.browser.execute("document.getElementById('textEditor').style.display = 'none'");
+        TextEditor.statusShow = false;
+        mp.gui.cursor.show(false, false);
+        mp.gui.chat.push('2');
+    } else if (!TextEditor.statusShow) {
+        TextEditor.browser.execute("document.getElementById('textEditor').style.display = 'block'");
+        mp.gui.chat.push('1');
+        TextEditor.statusShow = true;
         setTimeout(() => {
             mp.gui.cursor.show(true, true);
         }, 1 * 1000);
