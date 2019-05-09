@@ -214,10 +214,11 @@ mp.events.add('setColor', (R, G, B, A) => {
     // mp.gui.chat.push(`Color: ${getDrawRect(TextEditor.selected).colorR} / ${getDrawRect(TextEditor.selected).colorG} / ${getDrawRect(TextEditor.selected).colorB} / ${getDrawRect(TextEditor.selected).colorA}`);
 });
 mp.events.add('selectElement', (id, string) => {
-    mp.game.graphics.notify(`You selected elemen with ~r~${id}~w~ ID.`);
-    if (string !== 'Rect') TextEditor.created = true;
-    else TextEditor.created = false;
+    mp.game.graphics.notify(`You selected element with ~r~${id}~w~ ID.`);
+    /* if (string !== 'Rect') TextEditor.created = true;
+    else TextEditor.created = false; */
     TextEditor.selected = id;
+    mp.gui.chat.push(`client.index.js -> id: ${id}`)
 });
 /* Keys */
 mp.keys.bind(0x25, true, () => { // left arrow

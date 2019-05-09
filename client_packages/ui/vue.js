@@ -203,6 +203,7 @@ const body = new Vue({
         selectElement(id, string) {
             mp.trigger('selectElement', id, string);
             this.selectedElement = id;
+            mp.trigger('toChat', `id: ${id} | string: ${string} | selectedElement: ${this.selectedElement}`);
         },
         editElement(id, text) {
             // this.elements.splice(this.elements.findIndex(item => item.id === id), 1);
