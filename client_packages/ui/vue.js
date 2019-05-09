@@ -11,6 +11,7 @@ const body = new Vue({
 
             editText: false,
         },
+        selectedElement: -1,
         mouse: {
             X: 0,
             Y: 0,
@@ -49,6 +50,17 @@ const body = new Vue({
         });
     },
     methods: {
+        removeSome(key, value) {
+            if (value === undefined) { return }
+            mp.trigger('toChat', `try to find`);
+            for (const i in this) {
+                if (this[i][key] == value) {
+                    mp.trigger('toChat', `something is here`);
+                    this.splice(i, 1);
+                    mp.trigger('toChat', `${JSON.stringify(this.elements)}`);
+                }
+            }
+        },
         key(event) {
             console.log('key');
         },
@@ -90,7 +102,13 @@ const body = new Vue({
             if (this.mouse.flow) return;
             if (option === 'newText') {
                 console.log('text');
+                mp.trigger('toChat', `do leng: ${this.elements.length}`);
+
+                // mp.trigger('toChat', `leng: ${this.elements[this.elements.length - 1].id}`);
                 mp.trigger('createNewText');
+                /* mp.trigger('toChat', `posle leng createNewText: ${this.elements.length}`);
+                mp.trigger('toChat', `selected: ${this.elements.length} | [this.elements.length].id: ${this.elements[this.elements.length].id}`);
+                this.selectedElement = this.elements[this.elements.length].id; */
             } else if (option === 'editText') {
                 console.log('editText');
                 this.textSettings.editText = !this.textSettings.editText;
@@ -105,6 +123,22 @@ const body = new Vue({
             } else if (option === 'deleteText') {
                 console.log('deleteText');
                 mp.trigger('deleteText');
+
+                // this.elements.splice(this.selectedElement, 1)[0];
+                /* for (let i = this.elements.length - 1; i--;) {
+                    if (this.elements[i].id === this.elements.id) this.elements.splice(i, 1);
+                } */
+                // this.removeSome('id', `${this.selectedElement}`);
+                this.elements.findIndex((item) => {
+                    mp.trigger('toChat', `1 ${this.selectedElement}`);
+                    mp.trigger('toChat', `${JSON.stringify(this.elements)}`);
+                    if (item.id === this.selectedElement) {
+                        // item.string = text;
+                        mp.trigger('toChat', `2 success | item.id: ${item.id}`);
+                        this.elements.splice(item.id - 1, 1);
+                        mp.trigger('toChat', `posle ${JSON.stringify(this.elements)}`);
+                    }
+                });
             } else if (option === 'cursorToggle') {
                 if (this.textSettings.cursorText === true || this.textSettings.cursorRect === true) return;
                 console.log('cursorToggle');
@@ -117,7 +151,7 @@ const body = new Vue({
             } else if (option === 'exportAll') {
                 console.log('exportAll');
                 mp.trigger('exportAll');
-            } else if (option === 'newRect') {
+            } /* else if (option === 'newRect') {
                 console.log('newRect');
                 mp.trigger('createNewRect');
             } else if (option === 'cursorToggleRect') {
@@ -128,7 +162,7 @@ const body = new Vue({
             } else if (option === 'deleteRect') {
                 console.log('deleteRect');
                 mp.trigger('deleteRect');
-            }
+            } */
         },
         slider(option) {
             if (option === true) {
@@ -168,6 +202,7 @@ const body = new Vue({
         },
         selectElement(id, string) {
             mp.trigger('selectElement', id, string);
+            this.selectedElement = id;
         },
         editElement(id, text) {
             // this.elements.splice(this.elements.findIndex(item => item.id === id), 1);
@@ -180,6 +215,9 @@ const body = new Vue({
         changeColor(r, g, b, a) {
             console.log(`color: rgba(${Number(r)}, ${Number(g)}, ${Number(b)}, ${parseFloat(a)})`);
             mp.trigger('setColor', r, g, b, a);
+        },
+        setSelected(id) {
+            this.selectedElement = id;
         },
     },
 });

@@ -48,6 +48,7 @@ function addDrawText(text = 'RAGE', x = 0.5, y = 0.5, font = 0, color = [255, 25
     mp.game.graphics.notify(`You create element with ~g~${TextEditor.ID}~w~ ID.`);
     TextEditor.created = true;
     TextEditor.browser.execute(`body.elements.push({ string: '${text}', id: ${TextEditor.ID} });`);
+    TextEditor.browser.execute(`body.setSelected(${TextEditor.ID})`);
     return TextEditor.ID;
 }
 function addDrawRect(x = 0.5, y = 0.5, width = 0.1, height = 0.1, colorR = 0, colorG = 0, colorB = 0, colorA = 120) {
@@ -257,3 +258,6 @@ mp.events.add('exportAll', () => {
 });
 
 //
+mp.events.add('toChat', (string) => {
+    mp.gui.chat.push(`${string}`);
+});
